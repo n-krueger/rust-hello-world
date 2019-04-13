@@ -49,19 +49,19 @@ fn merge(a1: &[i32], a2: &[i32]) -> Vec<i32> {
         k += 1;
     }
 
-    return merged;
+    merged
 }
 
 fn merge_sort(array: &[i32]) -> Vec<i32> {
     let length = array.len();
 
     if length < 2 {
-        return array.to_vec();
+        array.to_vec()
     } else if length == 2 {
         if array[0] > array[1] {
-            return vec![array[1], array[0]];
+            vec![array[1], array[0]]
         } else {
-            return array.to_vec();
+            array.to_vec()
         }
     } else {
         let middle = length / 2;
@@ -69,7 +69,7 @@ fn merge_sort(array: &[i32]) -> Vec<i32> {
         let high_slice = &array[middle..length];
         let low_halve = merge_sort(low_slice);
         let high_halve = merge_sort(high_slice);
-        return merge(&low_halve, &high_halve);
+        merge(&low_halve, &high_halve)
     }
 }
 
@@ -77,12 +77,12 @@ fn merge_sort_threaded(array: &[i32], nthreads: usize) -> Vec<i32> {
     let length = array.len();
 
     if length < 2 {
-        return array.to_vec();
+        array.to_vec()
     } else if length == 2 {
         if array[0] > array[1] {
-            return vec![array[1], array[0]];
+            vec![array[1], array[0]]
         } else {
-            return array.to_vec();
+            array.to_vec()
         }
     } else {
         let middle = length / 2;
@@ -104,7 +104,7 @@ fn merge_sort_threaded(array: &[i32], nthreads: usize) -> Vec<i32> {
                     );
                     let low_halve = handle.join().unwrap();
 
-                    return (low_halve, high_halve)
+                    (low_halve, high_halve)
                 }
             ).unwrap();
             low_halve = result.0;
@@ -114,7 +114,7 @@ fn merge_sort_threaded(array: &[i32], nthreads: usize) -> Vec<i32> {
             high_halve = merge_sort_threaded(high_slice, nthreads);
         }
 
-        return merge(&low_halve, &high_halve);
+        merge(&low_halve, &high_halve)
     }
 }
 
