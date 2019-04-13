@@ -14,7 +14,7 @@ fn bubble_sort(array: &mut [i32]) {
     }
 }
 
-fn merge(a1: &Vec<i32>, a2: &Vec<i32>) -> Vec<i32> {
+fn merge(a1: &[i32], a2: &[i32]) -> Vec<i32> {
     let mut merged = vec![0; a1.len() + a2.len()];
 
     let (mut i, mut j, mut k) = (0, 0, 0);
@@ -45,32 +45,24 @@ fn merge(a1: &Vec<i32>, a2: &Vec<i32>) -> Vec<i32> {
     return merged;
 }
 
-fn merge_sort_helper(array: &[i32], low: usize, high: usize) -> Vec<i32> {
-    let slice_length = high - low;
+fn merge_sort(array: &[i32]) -> Vec<i32> {
+    let length = array.len();
 
-    if slice_length < 2 {
-        let mut copied = vec![0; slice_length];
-        for i in 0..slice_length {
-            copied[i] = array[low + i];
-        }
-        return copied;
-    } else if slice_length == 2 {
-        if array[low] > array[low + 1] {
-            return vec![array[low + 1], array[low]];
+    if length < 2 {
+        return array.to_vec();
+    } else if length == 2 {
+        if array[0] > array[1] {
+            return vec![array[1], array[0]];
         } else {
-            return vec![array[low], array[low + 1]];
+            return array.to_vec();
         }
     } else {
-        let middle = (low + high) / 2;
-        let low_halve = merge_sort_helper(array, low, middle);
-        let high_halve = merge_sort_helper(array, middle, high);
+        let middle = length / 2;
+        let low_halve = merge_sort(&array[0..middle]);
+        let high_halve = merge_sort(&array[middle..length]);
 
         return merge(&low_halve, &high_halve);
     }
-}
-
-fn merge_sort(array: &[i32]) -> Vec<i32> {
-    return merge_sort_helper(&array, 0, array.len());
 }
 
 fn main() {
